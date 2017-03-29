@@ -27,15 +27,11 @@ class BUDGET:
 		#get all the relevant info
 		conn = sqlite3.connect(self.file)
 		curr=conn.cursor()
-		curr.execute("PRAGMA table_info(catergories)")
-		headers=[]
-		##store the headers
-		for a in curr.fetchall():
-			headers.append(a[1])
-			print(a[1])
-		
-		curr.execute("SELECT * from catergories")
-		print(curr.fetchall())
+		cat_query="SELECT cat_name, cat_
+		curr.execute(cat_query)
+	def close(self):
+		conn.close()
+		print(self.file+" has been closed.\n Goodbye.")
 
 def __main__():
 	file_selected=False
