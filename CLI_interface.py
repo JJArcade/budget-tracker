@@ -27,8 +27,19 @@ class BUDGET:
 		#get all the relevant info
 		conn = sqlite3.connect(self.file)
 		curr=conn.cursor()
-		cat_query="SELECT cat_name, cat_
+		cat_query="SELECT cat_name, budget_amount, transactions, remainder_amount FROM catergories"
+		#go through results
+		rows=[("Catergory","Budgeted","Transactions","Remaining")]
 		curr.execute(cat_query)
+		for a in curr.fetchall():
+			rows.append(a)
+		#print results
+		for a in rows:
+			temp_str=""
+			for b in a:
+				x=str(b)
+				temp_str+=x.ljust(13," ")
+			print(temp_str)
 	def close(self):
 		conn.close()
 		print(self.file+" has been closed.\n Goodbye.")
