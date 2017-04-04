@@ -4,11 +4,6 @@ from os.path import abspath, curdir
 import re
 import urwid
 
-
-#global variables
-conn=sqlite3.connect("")
-curr=""
-
 #start with the interface?
 class BUDGET:
 	
@@ -51,41 +46,36 @@ class BUDGET:
 		print(self.file+" has been closed.\n Goodbye.")
 
 #Load files
-def load_database_choices(title):
+def menu(title, choices):
 	body = [urwid.Text(title), urwid.Divider()]
-	for a in os.listdir(curdir):
-		if bool(re.search('.db', a, re.IGNORECASE)):
-			button = urwid.Button(a)
-			urwid.connect_signal=(button, 'click', load_database, a)
-			body.append(urwid.AttrMap(button, None, focus_map='reversed'))
+	for c in choices:
+		button = urwid.Button(c)
+		urwid.connect_signal(button,'click',item_chosen,c)
+		body.append(urwid.AttrMap(button, None, focus_map='reversed'))
 	return urwid.ListBox(urwid.SimpleFocusListWalker(body))
 
-def load_database(button, choice):
-	#budget=BUDGET(file_location=choice)
-	response = urwid.Text(choice+"\n loaded")
-	done = urwid.Button('OK')
-	urwid.connect_signal(done, 'click', show_budget)
-	main.orignal_widget = urwid.Filler(urwid.Pile([response, urwid.AttrMap(done, None, focus_map='reversed')]))
+def item_chosen(button, choice):
+	response = urwid.Text(['You chose ', choice, '\n'])
+	done = urwid.Button('Ok')
+	urwid.connect_signal(done, 'click', exit_program)
+	main.original_widget = urwid.Filler(urwid.Pile([response, urwid.AttrMap(done, None, focus_map='reversed')]))
 
-#exit program
-def exit_on_q(key):
-	if key in ('q','Q'):
-		budget.close()
-		raise urwid.ExitMainLoop()
 
-#load the budget up
-def show_budget():
-	bud = urwid.Text(budget.print_cats())
-	main.original_widget=urwid.Filler(bud)
-	
-##MAIN LOOP
-budget=BUDGET(file_location='dummy.db')
-main = urwid.Padding(load_database_choices("Jess's Budget"), left=2, right=2)
+def show_budget(path):
+	budget=BUDGET(file_location=path)
+	bud = budget.
+
+def exit_program(button):
+	raise urwid.ExitMainLoop()
+
+choices=[]
+for a in os.listdir('.'):
+	if bool(re.search('db', a)):
+		choices.append(a)
+
+main = urwid.Padding(menu('Budget',choices),left=2,right=2)
 top = urwid.Overlay(main, urwid.SolidFill('\N{MEDIUM SHADE}'),
-	align = 'center', width=('relative', 60),
-	valign = 'middle', height=('relative', 60),
+	align='center', width=('relative',60),
+	valign='middle',height=('relative',60),
 	min_width=20, min_height=9)
-urwid.MainLoop(top, palette=[('reversed','standout','')]).run()
-	
-		
-				
+urwid.MainLoop(top,palette=[('reversed','standout','')]).run()
