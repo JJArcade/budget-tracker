@@ -38,7 +38,7 @@ class BUDGET:
 				x=str(b)
 				temp_str+=x.ljust(13," ")
 			#print(temp_str)
-			returned_text+=temp_str
+			returned_text+=temp_str+'\n'
 		return returned_text
 		
 	def close(self):
@@ -57,13 +57,17 @@ def menu(title, choices):
 def item_chosen(button, choice):
 	response = urwid.Text(['You chose ', choice, '\n'])
 	done = urwid.Button('Ok')
-	urwid.connect_signal(done, 'click', exit_program)
+#	urwid.connect_signal(done, 'click', exit_program)
+	urwid.connect_signal(done, 'click', show_budget, choice)
 	main.original_widget = urwid.Filler(urwid.Pile([response, urwid.AttrMap(done, None, focus_map='reversed')]))
 
 
-def show_budget(path):
+def show_budget(button, path):
 	budget=BUDGET(file_location=path)
-	bud = budget.
+	done = urwid.Button('Ok')
+	urwid.connect_signal(done, 'click', exit_program)
+	bud = urwid.Text([budget.print_cats()])
+	main.original_widget=urwid.Filler(urwid.Pile([bud,urwid.AttrMap(done, None, focus_map='reversed')]))
 
 def exit_program(button):
 	raise urwid.ExitMainLoop()
@@ -75,7 +79,7 @@ for a in os.listdir('.'):
 
 main = urwid.Padding(menu('Budget',choices),left=2,right=2)
 top = urwid.Overlay(main, urwid.SolidFill('\N{MEDIUM SHADE}'),
-	align='center', width=('relative',60),
-	valign='middle',height=('relative',60),
+	align='center', width=('relative',90),
+	valign='middle',height=('relative',90),
 	min_width=20, min_height=9)
 urwid.MainLoop(top,palette=[('reversed','standout','')]).run()
