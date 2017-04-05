@@ -5,6 +5,6 @@ catergory TEXT NOT NULL,
 description TEXT,
 trans_date DATE NOT NULL,
 amount REAL NOT NULL DEFAULT 0,
-FOREIGN KEY(catergory) REFERENCES catergories(catergory),
+FOREIGN KEY(catergory) REFERENCES catergories(cat_name),
 FOREIGN KEY(acc_id) REFERENCES accounts(acc_id)
 );
