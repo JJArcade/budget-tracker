@@ -64,10 +64,22 @@ def item_chosen(button, choice):
 
 def show_budget(button, path):
 	budget=BUDGET(file_location=path)
-	done = urwid.Button('Ok')
+	#buttons
+	add = urwid.Button('Add Transaction')
+	debt_graph = urwid.Button('Debt Map')
+	investment_graph = urwid.Button('Investment Tracking')
+	done = urwid.Button('Exit')
+	buttons=[add,debt_graph,investment_graph,done]
 	urwid.connect_signal(done, 'click', exit_program)
 	bud = urwid.Text([budget.print_cats()])
-	main.original_widget=urwid.Filler(urwid.Pile([bud,urwid.AttrMap(done, None, focus_map='reversed')]))
+	#Main loop
+	pile = urwid.Pile([bud,urwid.AttrMap(done, None, focus_map='reversed'),urwid.AttrMap(add,None,focus_map='reversed'),
+		urwid.AttrMap(debt_graph,None,focus_map='reversed'),urwid.AttrMap(investment_graph,None,focus_map='reversed')])
+	main.original_widget=urwid.Filler(pile)
+	#main.original_widget=urwid.Filler(urwid.Pile([bud,urwid.AttrMap(done, None, focus_map='reversed')]))
+
+def add_transaction(button, account):
+	
 
 def exit_program(button):
 	raise urwid.ExitMainLoop()
