@@ -1,0 +1,7 @@
+Core functions of budget class:
+	open budget
+	read budget values
+	store budget transactions
+	save budget
+	query database
+
