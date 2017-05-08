@@ -41,3 +41,5 @@ class Budget:
         self.curr.execute(select_string)
         returned_cats = self.curr.fetchall()
         return returned_cats
+
+    
