@@ -1,31 +1,27 @@
 import sys
-from PyQt5.QtWidgets import (QApplication, QWidget,
-    QToolTip, QPushButton)
-from PyQt5.QtGui import QIcon, QFont
-
+from PyQt5.QtWidgets import QWidget, QPushButton, QApplication
+from PyQt5.QtCore import QCoreApplication
 
 class Example(QWidget):
-    def __init__(self):
-        super().__init__()
 
-        self.initUI()
+        def __init__(self):
+            super().__init__()
 
-    def initUI(self):
+            self.initUI()
 
-            QToolTip.setFont(QFont('SansSerif',10))
+        def initUI(self):
 
-            self.setToolTip('This is a <b>QWidget</b> widget')
+            qbtn = QPushButton('Quit',self)
+            qbtn.clicked.connect(QCoreApplication.instance().quit)
+            qbtn.resize(qbtn.sizeHint())
+            qbtn.move(50,50)
 
-            btn = QPushButton('Button', self)
-            btn.setToolTip('This is a <b>QPushButton</b> widget')
-            btn.resize(btn.sizeHint())
-            btn.move(50,50)
-
-            self.setGeometry(300,300,300,200)
-            self.setWindowTitle('Tooltips')
+            self.setGeometry(300, 300, 250, 150)
+            self.setWindowTitle('Quit Button')
             self.show()
 
 if __name__ == '__main__':
+
     app = QApplication(sys.argv)
     ex = Example()
     sys.exit(app.exec_())
