@@ -1,27 +1,32 @@
 import sys
-from PyQt5.QtWidgets import QWidget, QPushButton, QApplication
+from PyQt5.QtWidgets import QWidget, QPushButton, QApplication, QMessageBox
 from PyQt5.QtCore import QCoreApplication
 
+
 class Example(QWidget):
+    def __init__(self):
+        super().__init__()
 
-        def __init__(self):
-            super().__init__()
+        self.initUI()
 
-            self.initUI()
+    def initUI(self):
 
-        def initUI(self):
+        self.setGeometry(300, 300, 250, 150)
+        self.setWindowTitle('Message Box')
+        self.show()
 
-            qbtn = QPushButton('Quit',self)
-            qbtn.clicked.connect(QCoreApplication.instance().quit)
-            qbtn.resize(qbtn.sizeHint())
-            qbtn.move(50,50)
+    def closeEvent(self, event):
+        reply = QMessageBox.question(self, 'Message',
+            "Are you sure to quit?", QMessageBox.Yes |
+            QMessageBox.No, QMessageBox.No)
 
-            self.setGeometry(300, 300, 250, 150)
-            self.setWindowTitle('Quit Button')
-            self.show()
+        if reply == QMessageBox.Yes:
+            event.accept()
+        else:
+            event.ignore()
+
 
 if __name__ == '__main__':
-
     app = QApplication(sys.argv)
     ex = Example()
     sys.exit(app.exec_())
